@@ -28,10 +28,16 @@ Faults 12 and 13 are dummy values used to ensure that the plot displays 0-360 de
 
 Here is a plot of Sarah's fault data:
 
-```{r rose_diagram, echo=TRUE, fig.height=8, fig.width=8, warning=FALSE}
+```{r rose_diagram_ggplot, echo=TRUE, fig.height=8, fig.width=8, warning=FALSE}
 ggplot(sarah_faults, aes(x = azimuth, y = magnitude, fill= magnitude)) +
   coord_polar(theta = "x", start = 0) +
   geom_col(width = 5, alpha = 0.3) +
   scale_x_continuous(breaks = seq(0, 360, 30))
+```
+
+```{r rose_diagram_plot.ly}
+
+p <- plot_ly(sarah_faults, r = sarah_faults$magnitude, t = sarah_faults$azimuth, type = "area") #%>% add_area(color = ~magnitude)
+layout(p, radialaxis = list(ticksuffix = "%"), orientation = 270)
 ```
 
