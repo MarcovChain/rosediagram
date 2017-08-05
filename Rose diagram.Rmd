@@ -35,9 +35,13 @@ ggplot(sarah_faults, aes(x = azimuth, y = magnitude, fill= magnitude)) +
   scale_x_continuous(breaks = seq(0, 360, 30))
 ```
 
-```{r rose_diagram_plot.ly}
+```{r rose_diagram_plot.ly, warning=FALSE}
+library(plotly)
+p <- plot_ly(sarah_faults, r = ~magnitude, t = ~azimuth, type = "area", sizes=c(1,5),
+             colors = "green", alpha=0.5)
 
-p <- plot_ly(sarah_faults, r = sarah_faults$magnitude, t = sarah_faults$azimuth, type = "area") #%>% add_area(color = ~magnitude)
-layout(p, radialaxis = list(ticksuffix = "%"), orientation = 270)
+
+layout(p, radialaxis = list(), orientation = -90)
+
 ```
 
