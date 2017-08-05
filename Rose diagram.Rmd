@@ -1,0 +1,37 @@
+---
+title: "Rose diagram in R"
+author: "Marc Boulet"
+date: "August 1, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Summary
+
+This document is designed to display a rose diagram. The data is taken from Sarah Grant's fault mapping.
+
+```{r data_load, error=FALSE}
+library(ggplot2)
+library(readr)
+library(knitr)
+sarah_faults <- read_csv("~/Dropbox/RStudio/Rose diagram/sarah_faults.csv")
+kable(sarah_faults)
+
+```
+  
+Faults 12 and 13 are dummy values used to ensure that the plot displays 0-360 degrees.
+
+## Rose diagram
+
+Here is a plot of Sarah's fault data:
+
+```{r rose_diagram, echo=TRUE, fig.height=8, fig.width=8, warning=FALSE}
+ggplot(sarah_faults, aes(x = azimuth, y = magnitude, fill= magnitude)) +
+  coord_polar(theta = "x", start = 0) +
+  geom_col(width = 5, alpha = 0.3) +
+  scale_x_continuous(breaks = seq(0, 360, 30))
+```
+
