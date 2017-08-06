@@ -17,7 +17,7 @@ This document is designed to display a rose diagram. The data is taken from Sara
 library(ggplot2)
 library(readr)
 library(knitr)
-sarah_faults <- read_csv("~/Dropbox/RStudio/Rose diagram/sarah_faults.csv")
+sarah_faults <- read_csv("~/rosediagram/data/sarah_faults.csv")
 kable(sarah_faults)
 
 ```
@@ -30,18 +30,16 @@ Here is a plot of Sarah's fault data:
 
 ```{r rose_diagram_ggplot, echo=TRUE, fig.height=8, fig.width=8, warning=FALSE}
 ggplot(sarah_faults, aes(x = azimuth, y = magnitude, fill= magnitude)) +
-  coord_polar(theta = "x", start = 0) +
-  geom_col(width = 5, alpha = 0.3) +
+  coord_polar(theta = "x", start = -.04) +
+  geom_col(width = 5, alpha = 0.5) +
   scale_x_continuous(breaks = seq(0, 360, 30))
+
 ```
 
 ```{r rose_diagram_plot.ly, warning=FALSE}
 library(plotly)
-p <- plot_ly(sarah_faults, r = ~magnitude, t = ~azimuth, type = "area", sizes=c(1,5),
-             colors = "green", alpha=0.5)
-
-
+p <- plot_ly(sarah_faults, r = ~magnitude, t = ~azimuth, type = "area", 
+             colors = "green", alpha=0.3)
 layout(p, radialaxis = list(), orientation = -90)
-
 ```
 
