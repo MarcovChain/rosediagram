@@ -1,0 +1,56 @@
+---
+title: "Rose diagram for fault analysis"
+subtitle: "An implementation in R Markdown - Tufte Handout"
+author: "Marc Boulet"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, message=FALSE, error=FALSE, warning=FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+# Summary
+
+This document is designed to display a rose diagram. The data is taken from Sarah Grant's fault mapping.^[Faults 12 and 13 are dummy values used to ensure that the plot displays 0-360 degrees.]
+
+```{r data_load}
+library(readr)
+library(knitr)
+sarah_faults <- read_csv("~/rosediagram/data/sarah_faults.csv")
+kable(sarah_faults)  
+```  
+  
+    
+    
+# Rose diagram using ggplot
+This diagram uses ggplot.^[Nice presentation with thin area bars and full colour control, though it is missing interactivity.]
+
+```{r rose_diagram_ggplot, echo=TRUE, fig.height=8, fig.width=8, warning=FALSE}
+library(ggplot2)
+ggplot(sarah_faults, aes(x = azimuth, y = magnitude, fill= magnitude)) +
+        coord_polar(theta = "x", start = -.04) +
+        geom_col(width = 5, alpha = 0.5) +
+        scale_x_continuous(breaks = seq(0, 360, 30))
+```
+
+# Rose diagram using plotly
+This diagram uses plotly.^[Nice presentation with great interactivity and axis ticks inside the plot. Bars are too wide, however.]
+```{r rose_diagram_plot.ly, warning=FALSE}
+library(plotly)
+p <- plot_ly(sarah_faults, r = ~magnitude, t = ~azimuth, type = "area", 
+             colors = "green", alpha=0.3)
+layout(p, radialaxis = list(), orientation = -90)
+```
+
